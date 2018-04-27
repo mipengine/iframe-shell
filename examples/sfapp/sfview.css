@@ -1,0 +1,80 @@
+/*
+ * SuperFrame CSS
+ * 需要和结果页保持统一,这里单独抽取css文件
+ * @yangfan16
+ */
+
+/* 框架 */
+.sfa-head {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 500;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    font-size: 18px;
+    background-color: #09f;
+    color: #fff;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.sfa-body {
+    overflow: hidden;
+    text-align: left;
+    padding-top: 44px;
+}
+
+
+/* 头部蓝条 */
+.sfa-head .sfa-back,
+.sfa-head .sfa-close,
+.sfa-head .sfa-tool {
+    width: 50px;
+    height: 44px;
+    float: left;
+    text-align: right;
+}
+
+.sfa-head .sfa-back {
+    width: 62px;
+}
+
+.sfa-head .sfa-close {
+    width: 43px;
+}
+
+.sfa-head .sfa-close span,
+.sfa-head .sfa-back span {
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.sfa-head .sfa-tool {
+    float: right;
+    text-align: center;
+}
+
+.sfa-head .sfa-title .c-line-clamp1 {
+    padding: 0 8px;
+}
+
+/*场景头部定制样式*/
+.sfa-view-no-head .sfa-head {
+    display: none;
+}
+.sfa-view-no-head .sfa-body {
+    padding-top: 0px;
+}
+.sfa-view-black-head .sfa-head {
+    background-color: #000000;
+}
+.sfa-view-gray-head .sfa-head {
+    background-color: #333333;
+}
+.sfa-view-white-head .sfa-head {
+    background-color: #ffffff;
+		color: #333333;
+}

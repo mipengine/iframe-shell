@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+        <title>iframe-shell sf-app example</title>
+        <link rel="stylesheet" type="text/css" href="http://pmd.baidu.com/build/dep/frame.css">
+        <link rel="stylesheet" type="text/css" href="http://pmd.baidu.com/build/css/pmd.css">
+        <link rel="stylesheet" type="text/css" href="./sfview.css">
+        <style type="text/css">
+            .sf-act-mib-frame .sf-head {
+                background-color: #fff;
+                box-shadow: 0 1px 3px rgba(0,0,0,.2);
+            }
+            .sfc-act-sf-mip-container {
+                display:block;
+                width:100%;
+                height: 100%;
+                overflow:hidden;
+                position: relative;
+                -webkit-tap-highlight-color: rgba(0,0,0,0);
+            }
+            .sfc-act-sf-mip-container-wrapper {
+                display: block;
+                height: 100%;
+                width:100%;
+                border-right: 0px solid #ccc;
+                background-color: #e6e6e6;
+                font-size: 14px;
+                -webkit-overflow-scrolling: touch;
+                overflow-y: scroll;
+                z-index: 1;
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0)
+            }
+            .sfc-act-sf-mip-container iframe {
+                background-color: #e6e6e6;
+                border: 0;
+                width: 100%;
+                height: 100%;
+                -webkit-overflow-scrolling: touch;
+                overflow-y: scroll;
+                overflow-x: hidden;
+            }
+            .sfc-act-sf-mip-loading {
+                position:absolute;
+                top: 150px;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                z-index: 2;
+            }
+            .sfa-results .c-container {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="sfa-page">
+		  <a href="" class="redirect" data-sf-href="/mip?url=https%3A%2F%2Fwww.mipengine.org%2F&amp;title=MIP 官网 123">Mip engine</a><br>
+          <a href="" class="redirect" data-sf-href="/mip?url=http%3A%2F%2Fm.120ask.com%2Faskg%2Fbd_detail%2F45853482&amp;title=MIP 官网 123">120ask</a>
+        </div>
+    </body>
+    <script src="./sf.js"></script>
+    <script src="./iframe-shell.js"></script>
+    <script type="text/javascript" src="./view/sfView.js"></script>
+    <script type="text/javascript" src="./resource/sfResource.js"></script>
+    <script type="text/javascript" src="./service/sfService.js"></script>
+    <script type="text/javascript" src="./service/indexService.js"></script>
+    <script>
+require.config({
+    baseUrl: '/'
+});
+require(['router/router', 'action', 'service/indexService', 'service/sfService', 'service/iframe-shell-service'],
+function (router, action, IndexService, SfService, MipService) {
+
+    router.config({
+        root: '/'
+    });
+
+    action.regist('/sf', new SfService());
+    action.regist('/mip', new MipService());
+    action.regist('/', new IndexService());
+
+    router.start();
+    action.start();
+
+    window.action = action;
+});
+    </script>
+</html>
