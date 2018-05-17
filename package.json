@@ -1,6 +1,6 @@
 {
   "name": "iframe-shell",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "mip iframe loader",
   "main": "src/index.js",
   "browser": "dist/iframe-shell.js",
