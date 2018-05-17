@@ -94,12 +94,6 @@ function (DefaultViewer, Messenger, wrapEvent, extend) {
                 }
                 url = protocol + url;
             }
-            /*else if (url.indexOf('/') === 0) {
-                // 相对路径
-                var a = document.createElement('a');
-                a.href = oldUrl;
-                url = a.protocol + '//' + a.host + url;
-            }*/
             return url;
         },
 
@@ -121,13 +115,12 @@ function (DefaultViewer, Messenger, wrapEvent, extend) {
          * 获取所有的双向消息处理器
          * 第三方若需增加自己的消息处理器，可以重写这个方法。
          *
-         * @return {object} eventName -> handler function
+         * @return {Object} eventName -> handler function
          */
         getMessageHandlers: function () {
             if (this.messageHandlers) {
                 return this.messageHandlers;
             }
-            var loader = this;
             this.messageHandlers = {};
             return this.messageHandlers;
         },
