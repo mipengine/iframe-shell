@@ -7,6 +7,11 @@ define(
     ['./viewer', './messenger', './utils/event', './utils/extend'],
 function (DefaultViewer, Messenger, wrapEvent, extend) {
     var currentScheme = location.protocol === 'https:' ? 'https:' : 'http:';
+    var cachePrefix = new RegExp(
+        '^(https?\\:)?//'
+        + '(mipcache\\.bdstatic\\.com|'
+        + '[^.]+\\.mipcdn.com)'
+    );
     var isHttps = function (url) {
         url = '' + url;
         if (url.indexOf('//') === 0) {
@@ -15,19 +20,35 @@ function (DefaultViewer, Messenger, wrapEvent, extend) {
         return (url.indexOf('https://') === 0);
     };
 
-    var mipCacheUrl = currentScheme + '//mipcache.bdstatic.com/c/';
     var isMipCachedUrl = function (url) {
-        url = '' + url;
-        return !!url.match(/^(https?:)?\/\/mipcache\.bdstatic\.com\/c\//);
+        url = '' + url; // toString
+        return !!url.match(cachePrefix);
     };
     var getMipCachedUrl = function (url) {
-        var pieces = url.split('//');
-        pieces.shift();
-        var plainUrl = pieces.join('//');
-        if (isHttps(url)) {
-            return mipCacheUrl + 's/' + plainUrl;
+        // 不合法的 url
+        if ((url && url.length < 4)
+            || !(url.indexOf('http') === 0 || url.indexOf('//') === 0)) {
+            return url;
         }
-        return mipCacheUrl + plainUrl;
+        // 已经是 mip cache url 的仅去掉协议头
+        if (isMipCachedUrl(url)) {
+            return url.replace(/^https?:/, '');
+        }
+        var prefix = '//mipcache.bdstatic.com/c/';
+        // 获取 domain
+        var parser = document.createElement('a');
+        parser.href = url;
+        var hostname = '' + parser.hostname;
+        var subDomain = hostname.replace(/-/g, '--').replace(/\./g, '-');
+        prefix = '//' + subDomain + '.mipcdn.com/c/';
+        if (url.indexOf('//') === 0 || url.indexOf('https') === 0) {
+            prefix += 's/';
+        }
+        // 去掉 http
+        var urlParas = url.split('//');
+        urlParas.shift();
+        url = urlParas.join('//');
+        return prefix + url;
     };
 
     /**
