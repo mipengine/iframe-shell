@@ -41,7 +41,8 @@ define(['./utils/debounce'], function (debounce) {
             'allow-modals'
         ].join(' '));
         Object.assign(iframeElement.style, {
-            width: '100%',
+            width: '1px',
+            minWidth: '100%',
             height: this.config.height || '100%',
             border: 'none'
         });
