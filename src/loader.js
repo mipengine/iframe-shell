@@ -34,13 +34,12 @@ function (DefaultViewer, Messenger, wrapEvent, extend) {
         if (isMipCachedUrl(url)) {
             return url.replace(/^https?:/, '');
         }
-        var prefix = '//mipcache.bdstatic.com/c/';
         // 获取 domain
         var parser = document.createElement('a');
         parser.href = url;
         var hostname = '' + parser.hostname;
         var subDomain = hostname.replace(/-/g, '--').replace(/\./g, '-');
-        prefix = '//' + subDomain + '.mipcdn.com/c/';
+        var prefix = '//' + subDomain + '.mipcdn.com/c/';
         if (url.indexOf('//') === 0 || url.indexOf('https') === 0) {
             prefix += 's/';
         }
