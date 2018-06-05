@@ -6,7 +6,6 @@
 /* global fis */
 
 fis.hook('amd');
-fis.hook('node_modules');
 
 fis.set('project.files', [
     'src/**',
@@ -18,47 +17,23 @@ fis.set('project.ignore', [
     'build/**'
 ]);
 
-fis.match('/(node_modules/micro-event/**).js', {
+fis.match('/amd_modules/(**).js', {
     isMod: true,
     packTo: 'packed/iframe-shell.js',
-    moduleId: 'iframe-shell/deps/$1'
+    moduleId: '$1'
 });
 
 fis.match('src/(**).js', {
     isMod: true,
     packTo: 'packed/iframe-shell.js',
-    moduleId: 'iframe-shell/$1'
+    moduleId: 'iframe-shell2/$1'
 });
 
 fis.match('src/index.js', {
-    moduleId: 'iframe-shell'
+    moduleId: 'iframe-shell2'
 });
 
 fis.match('test/(**).js', {
     isMod: true,
-    moduleId: 'iframe-shell-test/$1'
-});
-
-fis.media('prod').match('/node_modules/micro-event/**.js', {
-    packTo: 'packed/iframe-shell.min.js',
-    optimizer: fis.plugin('uglify-js', {
-        mangle: {
-            expect: 'exports, module, require, define'
-        },
-        compress: {
-            drop_console: true
-        }
-    })
-});
-
-fis.media('prod').match('src/(**).js', {
-    packTo: 'packed/iframe-shell.min.js',
-    optimizer: fis.plugin('uglify-js', {
-        mangle: {
-            expect: 'exports, module, require, define'
-        },
-        compress: {
-            drop_console: true
-        }
-    })
+    moduleId: 'iframe-shell2-test/$1'
 });

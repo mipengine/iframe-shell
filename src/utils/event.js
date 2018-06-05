@@ -5,7 +5,7 @@
  * @author oott123
  */
 
-define(['micro-event/dist/micro-event'], function (Emmiter) {
+define(['micro-event'], function (Emmiter) {
     return function (targetInstance) {
         Emmiter.mixin(targetInstance, ['on', 'off', 'trigger']);
     };
