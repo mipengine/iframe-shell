@@ -12,6 +12,7 @@ function (DefaultViewer, Messenger, wrapEvent, extend) {
         + '(mipcache\\.bdstatic\\.com|'
         + '[^.]+\\.mipcdn.com)'
     );
+    var mipHostName = 'mipcdn.com';
     var isHttps = function (url) {
         url = '' + url;
         if (url.indexOf('//') === 0) {
@@ -20,27 +21,37 @@ function (DefaultViewer, Messenger, wrapEvent, extend) {
         return (url.indexOf('https://') === 0);
     };
 
-    var isMipCachedUrl = function (url) {
+    var isMipCachedUrl = function (url, mcReg) {
+        if (!mcReg || !(mcReg instanceof RegExp)) {
+            mcReg = cachePrefix;
+        }
         url = '' + url; // toString
         return !!url.match(cachePrefix);
     };
-    var getMipCachedUrl = function (url) {
+    var getMipCachedUrl = function (url, mcReg, mcHostName) {
         // 不合法的 url
         if ((url && url.length < 4)
             || !(url.indexOf('http') === 0 || url.indexOf('//') === 0)) {
             return url;
         }
+        // 用户可配置自己的mipcdn域名
+        if (!mcReg || !(mcReg instanceof RegExp)) {
+            mcReg = cachePrefix;
+        }
+        if (!mcHostName) {
+            mcHostName = mipHostName;
+        }
         // 已经是 mip cache url 的仅去掉协议头
-        if (isMipCachedUrl(url)) {
+        if (isMipCachedUrl(url, mcReg)) {
             return url.replace(/^https?:/, '');
         }
-        var prefix = '//mipcache.bdstatic.com/c/';
+        var prefix = '';
         // 获取 domain
         var parser = document.createElement('a');
         parser.href = url;
         var hostname = '' + parser.hostname;
         var subDomain = hostname.replace(/-/g, '--').replace(/\./g, '-');
-        prefix = '//' + subDomain + '.mipcdn.com/c/';
+        prefix = '//' + subDomain + '.' + mcHostName + '/c/';
         if (url.indexOf('//') === 0 || url.indexOf('https') === 0) {
             prefix += 's/';
         }
@@ -79,10 +90,12 @@ function (DefaultViewer, Messenger, wrapEvent, extend) {
          */
         getFinalUrl: function () {
             var url = this.config.url || '';
+            var mcReg = this.config.mcReg || '';
+            var mcHostName = this.config.mcHostName || '';
             if (!url) {
                 return url;
             }
-            if (isMipCachedUrl(url)) {
+            if (isMipCachedUrl(url, mcReg)) {
                 return url;
             }
             var useMipCache = this.config.useMipCache;
@@ -90,7 +103,7 @@ function (DefaultViewer, Messenger, wrapEvent, extend) {
                 // useMipCache = true;
             }
             if (useMipCache) {
-                return getMipCachedUrl(url);
+                return getMipCachedUrl(url, mcReg, mcHostName);
             }
             return url;
         },
